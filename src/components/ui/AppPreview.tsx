@@ -51,7 +51,7 @@ const AppPreview = ({ className = '' }: AppPreviewProps) => {
         {/* Title Bar */}
         <div className="app-titlebar">
           <div className="app-titlebar-left">
-            <img src="/favicon.ico" alt="" className="app-icon" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+            <img src={`${import.meta.env.BASE_URL}favicon.ico`} alt="" className="app-icon" onError={(e) => { e.currentTarget.style.display = 'none' }} />
             <span className="app-title-text">OVERISE | System Manager</span>
           </div>
           <div className="app-titlebar-buttons">

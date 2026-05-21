@@ -25,7 +25,7 @@ export default function CheckoutBanner() {
   const bannerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch('/data/games.json')
+    fetch(`${import.meta.env.BASE_URL}data/games.json`)
       .then(r => r.json())
       .then((data: Game[]) => setGames(data.filter((g: Game) => g.cover)));
   }, []);
