@@ -30,7 +30,7 @@ function getUTMParams(): string {
   return utmParams.toString();
 }
 
-const CHECKOUT_URL = "https://www.ggcheckout.com/checkout/v4/6Ed9FJE8HXebnxREUKCQ";
+const CHECKOUT_URL = "https://ggcheckout.app/checkout/v5/pdDOCAlm20ZQxjUiglc3";
 
 const BONUSES = [
   { icon: Zap, title: 'Ativação Instantânea', desc: 'Acesso liberado em menos de 2 minutos após o pagamento.' },
