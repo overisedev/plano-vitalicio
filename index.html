@@ -14,14 +14,6 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@Overise" />
 
-    <script>
-  const redirect = sessionStorage.getItem('redirect');
-  if (redirect) {
-    sessionStorage.removeItem('redirect');
-    window.history.replaceState(null, '', redirect);
-  }
-</script>
-
     <!-- UTMify Scripts -->
     <script
       src="https://cdn.utmify.com.br/scripts/utms/latest.js"
@@ -35,6 +27,37 @@
       a.setAttribute("defer", "");
       a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
       document.head.appendChild(a);
+    </script>
+
+    <!-- Single Page Apps for GitHub Pages redirect script -->
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // MIT License
+      // https://github.com/rafgraph/spa-github-pages
+      // This script checks to see if a redirect is present in the query string,
+      // converts it back into the correct url and adds it to the
+      // browser's history using window.history.replaceState(...),
+      // which won't cause the browser to attempt to load the new url.
+      // When the single page app is loaded further down in this file,
+      // the correct url will be waiting in the browser's history for
+      // the single page app to route accordingly.
+      (function(l) {
+        if (l.search[1] === 'p') {
+          var q = l.search.slice(1).split('&').reduce(function(a, v) {
+            var s = v.split('=');
+            if (s[0] === 'p') { a.p = s[1]; }
+            else if (s[0] === 'q') { a.q = s[1].replace(/~and~/g, '&'); }
+            return a;
+          }, {});
+          if (q.p !== undefined) {
+            window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + (q.p || '') +
+              (q.q ? ('?' + q.q) : '') +
+              l.hash
+            );
+          }
+        }
+      }(window.location));
     </script>
   </head>
 
