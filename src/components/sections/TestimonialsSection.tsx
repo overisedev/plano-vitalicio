@@ -42,9 +42,9 @@ const testimonials = [
 ];
 
 const videoTestimonials = [
-  { id: 1, src: '/videos/testimonial-1.mp4', poster: '' },
-  { id: 2, src: '/videos/testimonial-2.mov', poster: '' },
-  { id: 3, src: '/videos/testimonial-3.mp4', poster: '' },
+  { id: 1, src: `${import.meta.env.BASE_URL}videos/testimonial-1.mp4`, poster: '' },
+  { id: 2, src: `${import.meta.env.BASE_URL}videos/testimonial-2.mov`, poster: '' },
+  { id: 3, src: `${import.meta.env.BASE_URL}videos/testimonial-3.mp4`, poster: '' },
 ];
 
 function VideoCard({ src }: { src: string }) {
