@@ -1,168 +1,76 @@
-import { forwardRef } from 'react';
+﻿import { useCallback } from 'react';
 
-export const GuaranteeSection = forwardRef<HTMLElement>(function GuaranteeSection(_, ref) {
+export function GuaranteeSection() {
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    const url = 'https://www.ggcheckout.com/checkout/v4/BvIb4ex53LM73mU3DJsX';
+    const val = 19.97;
+
+    try {
+      (window as any).ttq?.track('InitiateCheckout', {
+        content_type: 'product',
+        value: val,
+        currency: 'BRL',
+      });
+    } catch (err) {}
+
+    const utms = new URLSearchParams();
+    const keys = [
+      'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+      'src', 'sck', 'xcod', 'fbclid', 'gclid',
+    ];
+    const cur = new URLSearchParams(window.location.search);
+    keys.forEach((k) => {
+      const v = cur.get(k);
+      if (v) utms.set(k, v);
+    });
+    try {
+      const ud = localStorage.getItem('__utmify_session_data');
+      if (ud) {
+        const p = JSON.parse(ud);
+        keys.forEach((k) => { if (p[k] && !utms.has(k)) utms.set(k, p[k]); });
+      }
+    } catch (err) {}
+    try {
+      const ss = sessionStorage.getItem('__utmify_session_data');
+      if (ss) {
+        const q = JSON.parse(ss);
+        keys.forEach((k) => { if (q[k] && !utms.has(k)) utms.set(k, q[k]); });
+      }
+    } catch (err) {}
+    try {
+      const m = document.cookie.match(/utmify_session=([^;]+)/);
+      if (m) {
+        const c = JSON.parse(decodeURIComponent(m[1]));
+        keys.forEach((k) => { if (c[k] && !utms.has(k)) utms.set(k, c[k]); });
+      }
+    } catch (err) {}
+
+    let finalUrl = url;
+    const qs = utms.toString();
+    if (qs) finalUrl += (finalUrl.includes('?') ? '&' : '?') + qs;
+    setTimeout(() => { window.location.href = finalUrl; }, 800);
+  }, []);
+
   return (
-    <section ref={ref} className="section-tight container-main">
-    
-      <div className="guarantee-wrapper">
-        <div className="guarantee-card">
-          {/* Badge */}
-          <div className="guarantee-badge">
-            <span className="badge-icon">✓</span>
-            Garantia Total
-          </div>
-
-          {/* Content */}
-          <div className="guarantee-content">
-            <h3>Reembolso em até 7 dias</h3>
-            <p>
-              Compra sem risco. Se por qualquer motivo você não curtir a experiência, 
-              você pode solicitar reembolso em até <strong>7 dias</strong> após a compra.
-              Transparente, simples e direto — padrão <strong>Overise</strong>.
-            </p>
-          </div>
-
-          {/* Features */}
-          <div className="guarantee-features">
-            <div className="g-feature">
-              <span className="check">✓</span>
-              Pagamento 100% seguro
-            </div>
-            <div className="g-feature">
-              <span className="check">✓</span>
-              Ativação imediata via Steam
-            </div>
-            <div className="g-feature">
-              <span className="check">✓</span>
-              Suporte dedicado
-            </div>
-            <div className="g-feature">
-              <span className="check">✓</span>
-              Sem taxas ocultas
-            </div>
-          </div>
-
-          {/* Glow Effect */}
-          <div className="guarantee-glow" />
+    <section style={{ padding: '88px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden', background: 'var(--bg)' }}>
+      <div style={{ position: 'absolute', top: '-150px', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '400px', background: 'radial-gradient(ellipse,rgba(57,255,20,.03) 0%,transparent 65%)', pointerEvents: 'none' }}></div>
+      <div className="reveal" style={{ position: 'relative', zIndex: 2, maxWidth: '600px', margin: '0 auto' }}>
+        <div className="tag g">Pronto pra jogar?</div>
+        <h2 className="h2 on-dark" style={{ fontSize: 'clamp(34px,6vw,72px)', marginBottom: '16px' }}>
+          Sua lista de desejos pode<br />
+          <em>acabar hoje.</em>
+        </h2>
+        <p className="sub on-dark center" style={{ marginBottom: '32px' }}>
+          Elden Ring, GTA, God of War, Cyberpunk â€” acessÃ­veis em 5 minutos. R$49,97, taxa Ãºnica, licenÃ§a vitalÃ­cia.
+        </p>
+        <a href="#" onClick={handleClick} className="btn btn-accent btn-xl">
+          Garantir Meu Acesso â€” R$49,97
+        </a>
+        <div style={{ fontFamily: 'var(--fh)', fontSize: '11px', fontWeight: 700, color: 'var(--dim)', marginTop: '16px', letterSpacing: '.08em' }}>
+          7 DIAS DE GARANTIA Â· LICENÃ‡A VITALÃCIA Â· ACESSO IMEDIATO
         </div>
       </div>
-
-      <style>{`
-        .guarantee-wrapper {
-          max-width: 700px;
-          margin: 0 auto;
-        }
-        
-        .guarantee-card {
-          position: relative;
-          padding: 32px;
-          border-radius: var(--r2);
-          border: 1px solid rgba(0,255,65,.25);
-          background: linear-gradient(135deg, rgba(0,255,65,.05) 0%, rgba(0,0,0,.3) 100%);
-          box-shadow: 0 20px 60px rgba(0,255,65,.08);
-          overflow: hidden;
-          text-align: center;
-        }
-        
-        .guarantee-glow {
-          position: absolute;
-          top: -50%;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 400px;
-          height: 200px;
-          background: radial-gradient(ellipse, rgba(0,255,65,.12), transparent 70%);
-          pointer-events: none;
-        }
-        
-        .guarantee-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 10px 16px;
-          border-radius: 999px;
-          background: rgba(0,255,65,.15);
-          border: 1px solid rgba(0,255,65,.35);
-          color: var(--neon);
-          font-weight: 900;
-          font-size: 12px;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          margin-bottom: 20px;
-          position: relative;
-          z-index: 1;
-        }
-        
-        .badge-icon {
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: var(--neon);
-          color: #000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 11px;
-          font-weight: 900;
-        }
-        
-        .guarantee-content {
-          position: relative;
-          z-index: 1;
-          margin-bottom: 24px;
-        }
-        
-        .guarantee-content h3 {
-          font-size: 26px;
-          font-weight: 950;
-          color: #fff;
-          margin: 0 0 12px;
-          letter-spacing: -1px;
-          text-transform: uppercase;
-        }
-        
-        .guarantee-content p {
-          font-size: 15px;
-          color: var(--muted);
-          line-height: 1.7;
-          margin: 0;
-          max-width: 500px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-        
-        .guarantee-content strong {
-          color: var(--neon);
-          font-weight: 800;
-        }
-        
-        .guarantee-features {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 12px;
-          position: relative;
-          z-index: 1;
-        }
-        
-        .g-feature {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 10px 14px;
-          border-radius: 12px;
-          background: rgba(0,0,0,.3);
-          border: 1px solid rgba(255,255,255,.08);
-          font-size: 12px;
-          font-weight: 800;
-          color: #d9d9d9;
-        }
-        
-        .g-feature .check {
-          color: var(--neon);
-          font-weight: 900;
-        }
-      `}</style>
     </section>
   );
-});
+}

@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <title>Overise | Sua Steam, Liberada</title>
     <meta name="description" content="Desbloqueie sua biblioteca Steam completa. Acesso instantâneo a milhares de jogos com a Overise." />
     <meta name="author" content="Overise" />
@@ -61,7 +64,7 @@
     </script>
   </head>
 
-  <body>
+  <body><div id="error-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:red;color:white;z-index:99999;font-size:20px;padding:20px;display:none;white-space:pre-wrap;overflow:auto;"></div><script>window.addEventListener("error", (e) => { document.getElementById("error-overlay").style.display="block"; document.getElementById("error-overlay").innerText += e.error ? e.error.stack : e.message + "\n"; }); window.addEventListener("unhandledrejection", (e) => { document.getElementById("error-overlay").style.display="block"; document.getElementById("error-overlay").innerText += e.reason ? e.reason.stack || e.reason : "Unhandled rejection\n"; });</script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -1,123 +1,124 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useGames } from '@/hooks/useGames';
-import { Header } from '@/components/layout/Header';
 import { HeroSection } from '@/components/sections/HeroSection';
-import { GamesPreviewSection } from '@/components/sections/GamesPreviewSection';
+import { MarqueeSection } from '@/components/sections/MarqueeSection';
 import { HowItWorksSection } from '@/components/sections/HowItWorksSection';
-import { CatalogSection } from '@/components/sections/CatalogSection';
+import { GamesPreviewSection } from '@/components/sections/GamesPreviewSection';
 import { AboutSection } from '@/components/sections/AboutSection';
+import { IndividualGamesSection } from '@/components/sections/IndividualGamesSection';
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
 import { PricingSection } from '@/components/sections/PricingSection';
-import { GuaranteeSection } from '@/components/sections/GuaranteeSection';
 import { FAQSection } from '@/components/sections/FAQSection';
+import { GuaranteeSection } from '@/components/sections/GuaranteeSection';
 import { Footer } from '@/components/layout/Footer';
-import { GameModal } from '@/components/ui/GameModal';
-import { UrgencyBar } from '@/components/ui/UrgencyBar';
-import { ScarcityBadge } from '@/components/ui/ScarcityBadge';
-import { ChatWidget } from '@/components/ui/ChatWidget';
-import type { Game } from '@/types/game';
 
 const Index = () => {
-  const { games, aaaGames, loading, totalGames, searchGames, getGamesByCategory } = useGames();
-  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
-  const [featuredIndex, setFeaturedIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [urgencyBarVisible, setUrgencyBarVisible] = useState(false);
+  const { games } = useGames();
 
-  // Track urgency bar visibility
+  // IntersectionObserver for .reveal animations
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const threshold = window.innerHeight * 0.8;
-      setUrgencyBarVisible(scrollY > threshold);
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.06 }
+    );
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
-  // Rotate featured game with smooth transition
+  // Re-observe on route/content changes
   useEffect(() => {
-    if (aaaGames.length === 0) return;
-    const interval = setInterval(() => {
-      setIsTransitioning(true);
+    const timer = setTimeout(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        },
+        { threshold: 0.06 }
+      );
+      document.querySelectorAll('.reveal:not(.visible)').forEach((el) => observer.observe(el));
+      return () => observer.disconnect();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [games]);
+
+  // Smooth scroll with force-reveal
+  useEffect(() => {
+    const handleClick = (e: Event) => {
+      const anchor = e.currentTarget as HTMLAnchorElement;
+      const href = anchor.getAttribute('href');
+      if (!href || href.length < 2 || !href.startsWith('#')) return;
+      const el = document.querySelector(href);
+      if (!el) return;
+      e.preventDefault();
+
+      // Force all reveals visible for accurate scroll position
+      document.querySelectorAll('.reveal:not(.visible)').forEach((r) => {
+        (r as HTMLElement).style.transition = 'none';
+        r.classList.add('visible');
+      });
+
       setTimeout(() => {
-        setFeaturedIndex((prev) => (prev + 1) % aaaGames.length);
-        setTimeout(() => setIsTransitioning(false), 100);
-      }, 600);
-    }, 8000);
-    return () => clearInterval(interval);
-  }, [aaaGames.length]);
+        const header = document.querySelector('.site-header');
+        const offset = header ? (header as HTMLElement).offsetHeight + 8 : 60;
+        const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }, 50);
+    };
 
-  const featuredGame = aaaGames[featuredIndex];
-
-  const handlePrevFeatured = () => {
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setFeaturedIndex((prev) => (prev - 1 + aaaGames.length) % aaaGames.length);
-      setTimeout(() => setIsTransitioning(false), 100);
-    }, 500);
-  };
-
-  const handleNextFeatured = () => {
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setFeaturedIndex((prev) => (prev + 1) % aaaGames.length);
-      setTimeout(() => setIsTransitioning(false), 100);
-    }, 500);
-  };
-
+    const anchors = document.querySelectorAll('a[href^="#"]');
+    anchors.forEach((a) => a.addEventListener('click', handleClick));
+    return () => anchors.forEach((a) => a.removeEventListener('click', handleClick));
+  }, []);
 
   return (
-    <div className="min-h-screen">
-      <UrgencyBar isVisible={urgencyBarVisible} />
-      <Header urgencyBarVisible={urgencyBarVisible} />
-      
-      <HeroSection 
-        featuredGame={featuredGame}
-        isTransitioning={isTransitioning}
-        onPrev={handlePrevFeatured}
-        onNext={handleNextFeatured}
-        onOpenDetails={setSelectedGame}
-      />
-      
-      <GamesPreviewSection 
-        games={games} 
-        totalGames={totalGames}
-        onOpenDetails={setSelectedGame}
-      />
-      
+    <div>
+      {/* Urgency Topbar */}
+      <div className="urgency-topbar">
+        Acesso imediato — <strong>+40.000 jogos por R$49,97 · taxa única</strong>{' '}
+        <span style={{ opacity: 0.55, fontWeight: 600 }}>
+          · licença vitalícia · 7 dias de garantia
+        </span>
+      </div>
+
+      {/* Sticky Header */}
+      <header className="site-header">
+        <div className="site-header-inner">
+          <a href="#" className="site-logo">
+            OVER<span>ISE</span>
+          </a>
+          <nav className="site-nav">
+            <a href="#how">Como Funciona</a>
+            <a href="#games">Jogos</a>
+            <a href="#pricing">Planos</a>
+            <a href="#faq">FAQ</a>
+          </nav>
+          <a href="#pricing" className="btn btn-accent btn-sm header-cta">
+            Garantir Acesso
+          </a>
+        </div>
+      </header>
+
+      <HeroSection />
+      <MarqueeSection />
       <HowItWorksSection />
-      
-      <CatalogSection 
-        games={games}
-        totalGames={totalGames}
-        getGamesByCategory={getGamesByCategory}
-        searchGames={searchGames}
-        onOpenDetails={setSelectedGame}
-      />
-      
+      <GamesPreviewSection />
       <AboutSection />
-      
       <TestimonialsSection />
-      
+      <IndividualGamesSection games={games} />
       <PricingSection />
-      
-      <GuaranteeSection />
-      
       <FAQSection />
-      
+      <GuaranteeSection />
       <Footer />
-
-      {selectedGame && (
-        <GameModal 
-          game={selectedGame} 
-          onClose={() => setSelectedGame(null)} 
-        />
-      )}
-
-      
-      <ChatWidget />
     </div>
   );
 };
