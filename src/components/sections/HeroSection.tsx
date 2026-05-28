@@ -1,155 +1,47 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-
-const FEATURED_GAMES = [
-  {
-    n: 'Elden Ring',
-    d: 'Ação, RPG · FromSoftware',
-    img: 'https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg',
-  },
-  {
-    n: 'God of War',
-    d: 'Ação, Aventura · Santa Monica',
-    img: 'https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg',
-  },
-  {
-    n: 'Red Dead Redemption 2',
-    d: 'Ação, Aventura · Rockstar',
-    img: 'https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg',
-  },
-  {
-    n: 'Cyberpunk 2077',
-    d: 'RPG, Mundo Aberto · CD Projekt',
-    img: 'https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg',
-  },
-  {
-    n: "Baldur's Gate 3",
-    d: 'RPG · Larian Studios',
-    img: 'https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg',
-  },
-];
-
-type SimPhase = 'waiting' | 'pressed' | 'activating' | 'unlocked';
+import { useState, useRef } from 'react';
 
 export function HeroSection() {
-  const [gameIndex, setGameIndex] = useState(0);
-  const [phase, setPhase] = useState<SimPhase>('waiting');
-  const [noTransition, setNoTransition] = useState(false);
-  const cancelledRef = useRef(false);
+  const [muted, setMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Preload images on mount
-  useEffect(() => {
-    FEATURED_GAMES.forEach((g) => {
-      const img = new Image();
-      img.src = g.img;
-    });
-  }, []);
-
-  const wait = useCallback(
-    (ms: number) =>
-      new Promise<void>((resolve, reject) => {
-        const id = setTimeout(() => {
-          if (cancelledRef.current) {
-            reject(new Error('cancelled'));
-          } else {
-            resolve();
-          }
-        }, ms);
-        // Store timeout id for potential cleanup — not strictly necessary
-        // since we use the cancelledRef flag
-        void id;
-      }),
-    [],
-  );
-
-  useEffect(() => {
-    cancelledRef.current = false;
-    let running = true;
-
-    async function loop() {
-      let idx = 0;
-
-      while (running) {
-        try {
-          // Reset to waiting
-          setNoTransition(false);
-          setPhase('waiting');
-          await wait(2500);
-
-          // Button pressed
-          setPhase('pressed');
-          await wait(600);
-
-          // Progress / activating
-          setPhase('activating');
-          await wait(2200);
-
-          // Unlocked
-          setPhase('unlocked');
-          await wait(4000);
-
-          // Quick transition to next game
-          setNoTransition(true);
-          setPhase('waiting');
-          idx = (idx + 1) % FEATURED_GAMES.length;
-          setGameIndex(idx);
-          await wait(80);
-        } catch {
-          // cancelled
-          break;
-        }
-      }
+  const handleUnmute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.currentTime = 0;
+      videoRef.current.play();
     }
+    setMuted(false);
+  };
 
-    loop();
-
-    return () => {
-      running = false;
-      cancelledRef.current = true;
-    };
-  }, [wait]);
-
-  const game = FEATURED_GAMES[gameIndex];
-
-  const simClasses = [
-    'sim-wrap',
-    phase === 'unlocked' ? 'sim-unlocked' : '',
-    noTransition ? 'sim-notransition' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
-
-  const statusText = phase === 'unlocked' ? '● DISPONÍVEL' : '○ AGUARDANDO';
-  const statusClass = phase === 'unlocked' ? 'sim-status on' : 'sim-status';
-
-  let actionContent: React.ReactNode;
-  switch (phase) {
-    case 'waiting':
-      actionContent = <div className="sim-btn">Ativar Acesso</div>;
-      break;
-    case 'pressed':
-      actionContent = <div className="sim-btn sim-btn-pressed">Ativar Acesso</div>;
-      break;
-    case 'activating':
-      actionContent = (
-        <div className="sim-progress">
-          <div className="sim-progress-fill"></div>
-          <span className="sim-progress-text">Ativando acesso...</span>
-        </div>
-      );
-      break;
-    case 'unlocked':
-      actionContent = <div className="sim-btn sim-btn-go">Instalar Agora</div>;
-      break;
-  }
+  const pulseStyle = `
+    @keyframes vsl-pulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(40,196,12,0.2), 0 0 0 0 rgba(40,196,12,0.4); }
+      50% { box-shadow: 0 4px 20px rgba(40,196,12,0.3), 0 0 0 14px rgba(40,196,12,0); }
+    }
+    .vsl-unmute-btn {
+      animation: vsl-pulse 2s ease-in-out infinite;
+    }
+    .vsl-unmute-btn:hover {
+      transform: scale(1.06) !important;
+    }
+    @media (max-width: 600px) {
+      .vsl-unmute-btn { font-size: 13px !important; padding: 11px 20px !important; }
+      .vsl-unmute-btn svg { width: 16px !important; height: 16px !important; }
+    }
+  `;
 
   return (
     <section id="hero" className="hero-section">
+      <style>{pulseStyle}</style>
       <div className="container hero-layout">
         <div className="hero-left">
-          <h1 className="hero-h1 reveal rd1">
-            Sua biblioteca Steam.
+          <h1 className="hero-h1 reveal rd1" style={{ fontSize: 'clamp(54px, 10vw, 120px)', lineHeight: 0.85, marginBottom: '24px' }}>
+            SUA STEAM,
             <br />
-            <em>+40.000 jogos por R$49,97.</em>
+            <span style={{ color: 'var(--accent)' }}>LIBERADA.</span>
+            <div style={{ fontSize: 'clamp(20px, 4vw, 32px)', marginTop: '16px', color: '#fff', letterSpacing: '0' }}>
+              A partir de R$ 7,90.
+            </div>
           </h1>
           <p className="hero-sub reveal rd1">
             Acesse o catálogo completo com o Overise. Escolha o jogo, baixe direto pela Steam e
@@ -157,11 +49,35 @@ export function HeroSection() {
             sempre.
           </p>
           <div className="hero-btns reveal rd1">
-            <a href="#pricing" className="btn btn-accent btn-xl">
-              Garantir Meu Acesso
+            <a
+              href="#jogos-individuais"
+              className="btn btn-accent"
+              style={{
+                fontSize: '18px',
+                padding: '20px 40px',
+                boxShadow: '0 0 40px rgba(40,196,12,.4), 0 0 80px rgba(40,196,12,.15)',
+                fontWeight: 900,
+                letterSpacing: '.04em',
+              }}
+            >
+              🎮 Escolher um jogo — R$ 7,90
             </a>
-            <a href="#how" className="btn btn-ghost btn-xl">
-              Ver como funciona
+            <a
+              href="#pricing"
+              style={{
+                fontSize: '13px',
+                color: 'var(--dim)',
+                textDecoration: 'underline',
+                textUnderlineOffset: '3px',
+                fontFamily: 'var(--fb)',
+                fontWeight: 500,
+                letterSpacing: '0',
+                textTransform: 'none',
+                padding: '4px 0',
+                display: 'inline-block',
+              }}
+            >
+              ou ver todos os planos →
             </a>
           </div>
           <div className="hero-trust reveal rd1">
@@ -177,30 +93,78 @@ export function HeroSection() {
           </div>
         </div>
         <div className="hero-right">
-          <div className={simClasses} id="sim">
-            <div className="sim-header">
-              <div className="sim-logo">OVERISE</div>
-              <div className={statusClass} id="sim-status">
-                {statusText}
-              </div>
-            </div>
-            <div className="sim-body">
+          <div
+            className="vsl-wrap"
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '520px',
+              aspectRatio: '16/9',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              border: '1px solid rgba(255,255,255,0.08)',
+              backgroundColor: '#0c0e12',
+              boxShadow: '0 0 60px rgba(40,196,12,0.03), 0 24px 56px rgba(0,0,0,0.5)',
+            }}
+          >
+            <video
+              ref={videoRef}
+              src="https://i.imgur.com/9Q5h4Ev.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                filter: muted ? 'blur(8px) brightness(0.4)' : 'none',
+                transition: 'filter 0.5s ease',
+              }}
+            />
+            {muted && (
               <div
-                className="sim-img"
-                id="sim-img"
-                style={{ backgroundImage: `url(${game.img})` }}
-              ></div>
-              <div className="sim-overlay"></div>
-              <div className="sim-info">
-                <div className="sim-name" id="sim-name">
-                  {game.n}
-                </div>
-                <div className="sim-dev" id="sim-dev">
-                  {game.d}
-                </div>
-                <div id="sim-action">{actionContent}</div>
+                className="vsl-overlay"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 10,
+                  cursor: 'pointer',
+                }}
+                onClick={handleUnmute}
+              >
+                <button
+                  className="vsl-unmute-btn"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    background: 'var(--accent)',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '14px 28px',
+                    borderRadius: '50px',
+                    fontFamily: 'var(--fh)',
+                    fontWeight: 900,
+                    fontSize: '18px',
+                    letterSpacing: '0.02em',
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11 5L6 9H2V15H6L11 19V5Z" />
+                    <path d="M15.54 8.46C16.4774 9.39764 17.004 10.6692 17.004 11.995C17.004 13.3208 16.4774 14.5924 15.54 15.53" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M19.07 4.93005C20.9447 6.80528 21.9979 9.34836 21.9979 12.0001C21.9979 14.6517 20.9447 17.1948 19.07 19.0701" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  TOQUE PARA ATIVAR O ÁUDIO
+                </button>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

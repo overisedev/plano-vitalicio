@@ -3,7 +3,6 @@ import { useGames } from '@/hooks/useGames';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { MarqueeSection } from '@/components/sections/MarqueeSection';
 import { HowItWorksSection } from '@/components/sections/HowItWorksSection';
-import { GamesPreviewSection } from '@/components/sections/GamesPreviewSection';
 import { AboutSection } from '@/components/sections/AboutSection';
 import { IndividualGamesSection } from '@/components/sections/IndividualGamesSection';
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
@@ -96,12 +95,6 @@ const Index = () => {
           <a href="#" className="site-logo">
             OVER<span>ISE</span>
           </a>
-          <nav className="site-nav">
-            <a href="#how">Como Funciona</a>
-            <a href="#games">Jogos</a>
-            <a href="#pricing">Planos</a>
-            <a href="#faq">FAQ</a>
-          </nav>
           <a href="#pricing" className="btn btn-accent btn-sm header-cta">
             Garantir Acesso
           </a>
@@ -111,7 +104,6 @@ const Index = () => {
       <HeroSection />
       <MarqueeSection />
       <HowItWorksSection />
-      <GamesPreviewSection />
       <AboutSection />
       <TestimonialsSection />
       <IndividualGamesSection games={games} />

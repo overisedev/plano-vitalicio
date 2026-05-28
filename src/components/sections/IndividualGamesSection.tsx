@@ -121,7 +121,7 @@ export function IndividualGamesSection({ games }: IndividualGamesSectionProps) {
       const q = searchQuery.toLowerCase().trim();
       result = individualGamesList.filter(g => g.name.toLowerCase().includes(q));
     } else if (!showAll) {
-      result = individualGamesList.slice(0, 10);
+      result = individualGamesList.slice(0, 6);
     }
     return result;
   }, [searchQuery, individualGamesList, showAll]);
@@ -199,11 +199,11 @@ export function IndividualGamesSection({ games }: IndividualGamesSectionProps) {
 
                   {/* Info */}
                   <div className="ind-store-info">
-                    <div className="ind-store-region">GLOBAL</div>
-                    <h3 className="ind-store-name">{game.name} Steam Key GLOBAL</h3>
+                    <h3 className="ind-store-name">{game.name}</h3>
                     <div className="ind-store-price-row">
-                      <span className="ind-store-price">R$ 67,00</span>
-                      <span className="ind-store-pix">À vista no Pix</span>
+                      <span className="ind-store-oldprice">R$ 67,00</span>
+                      <span className="ind-store-price">R$ 7,90</span>
+                      <span className="ind-store-pix">à vista no Pix · acesso vitalício</span>
                     </div>
                     <button
                       className="ind-store-btn"
@@ -227,7 +227,7 @@ export function IndividualGamesSection({ games }: IndividualGamesSectionProps) {
         </div>
 
         {/* Load More */}
-        {!showAll && !searchQuery.trim() && individualGamesList.length > 10 && (
+        {!showAll && !searchQuery.trim() && individualGamesList.length > 6 && (
           <div className="ind-load-more">
             <button className="ind-load-btn" onClick={() => setShowAll(true)}>
               Ver catálogo completo ({individualGamesList.length} jogos)
@@ -285,12 +285,11 @@ export function IndividualGamesSection({ games }: IndividualGamesSectionProps) {
         /* STORE GRID */
         .ind-store-grid {
           display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 16px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
           margin-bottom: 48px;
         }
-        @media (max-width: 1100px) { .ind-store-grid { grid-template-columns: repeat(4, 1fr); } }
-        @media (max-width: 860px)  { .ind-store-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 900px)  { .ind-store-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
         @media (max-width: 600px)  { .ind-store-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
         /* STORE CARD */
@@ -350,13 +349,20 @@ export function IndividualGamesSection({ games }: IndividualGamesSectionProps) {
           overflow: hidden;
         }
         .ind-store-price-row {
-          display: flex; flex-direction: column; gap: 2px;
+          display: flex; flex-direction: column; gap: 3px;
           margin-top: auto; padding-top: 10px;
+        }
+        .ind-store-oldprice {
+          font-family: var(--fb);
+          font-size: 12px; font-weight: 600;
+          color: rgba(255,255,255,0.35);
+          text-decoration: line-through;
         }
         .ind-store-price {
           font-family: var(--fh);
-          font-size: 24px; font-weight: 950;
-          color: #fff; letter-spacing: -.5px;
+          font-size: 28px; font-weight: 950;
+          color: #28c40c; letter-spacing: -.5px;
+          line-height: 1;
         }
         .ind-store-pix {
           font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5);
@@ -366,7 +372,7 @@ export function IndividualGamesSection({ games }: IndividualGamesSectionProps) {
         .ind-store-btn {
           display: flex; align-items: center; justify-content: center; gap: 8px;
           width: 100%;
-          background: #39ff14;
+          background: #28c40c;
           color: #000;
           border: none;
           border-radius: 8px;
@@ -412,11 +418,11 @@ export function IndividualGamesSection({ games }: IndividualGamesSectionProps) {
         /* Upsell */
         .ind-upsell {
           background: var(--card);
-          border: 1px solid rgba(57,255,20,.15);
+          border: 1px solid rgba(40,196,12,.15);
           border-radius: 14px; padding: 28px 32px;
           display: flex; align-items: center;
           justify-content: space-between; gap: 24px;
-          box-shadow: 0 0 40px rgba(57,255,20,.04);
+          box-shadow: 0 0 40px rgba(40,196,12,.04);
         }
         .ind-upsell-content h4 {
           margin: 0 0 6px;
@@ -427,7 +433,7 @@ export function IndividualGamesSection({ games }: IndividualGamesSectionProps) {
         .ind-upsell-content p { margin: 0; font-size: 14px; color: var(--muted); }
         .ind-upsell-btn {
           background: transparent;
-          border: 1px solid rgba(57,255,20,.4);
+          border: 1px solid rgba(40,196,12,.4);
           color: var(--accent);
           padding: 12px 24px; border-radius: 8px;
           font-weight: 700; font-size: 13px;
@@ -436,7 +442,7 @@ export function IndividualGamesSection({ games }: IndividualGamesSectionProps) {
           font-family: var(--fh);
         }
         .ind-upsell-btn:hover {
-          background: rgba(57,255,20,.08);
+          background: rgba(40,196,12,.08);
           border-color: var(--accent);
           transform: translateY(-2px);
         }
@@ -446,9 +452,13 @@ export function IndividualGamesSection({ games }: IndividualGamesSectionProps) {
         }
 
         @media (max-width: 600px) {
-          .ind-store-name { font-size: 12px; }
-          .ind-store-price { font-size: 17px; }
-          .ind-store-btn { font-size: 12px; padding: 9px; }
+          .ind-store-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+          .ind-store-info { padding: 8px; }
+          .ind-store-name { font-size: 11px; }
+          .ind-store-price { font-size: 18px; }
+          .ind-store-oldprice { font-size: 10px; }
+          .ind-store-pix { font-size: 9px; line-height: 1.2; }
+          .ind-store-btn { padding: 8px 10px; font-size: 11px; margin-top: 6px; }
         }
       `}</style>
     </section>

@@ -14,21 +14,6 @@ const EMO_CARDS = [
     d: 'Em vez de assistir gameplay no YouTube, você instala e joga. Na hora.',
     i: '1091500',
   },
-  {
-    t: 'Dorme tranquilo',
-    d: 'Instalação limpa, sem arquivo estranho. Joga sossegado, PC inteiro.',
-    i: '1174180',
-  },
-  {
-    t: 'Para de se sentir excluído',
-    d: 'R$250 num jogo não cabe no orçamento. R$19,97 taxa única cabe.',
-    i: '1593500',
-  },
-  {
-    t: 'Experimenta sem culpa',
-    d: 'Quer testar um jogo? Instala. Não curtiu, troca.',
-    i: '1086940',
-  },
 ];
 
 export function AboutSection() {

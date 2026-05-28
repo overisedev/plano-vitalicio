@@ -25,30 +25,6 @@ const PLANS = [
     btnClass: 'btn-basic',
   },
   {
-    id: 'advanced',
-    name: 'AVANÇADO',
-    subtitle: 'O favorito dos jogadores',
-    oldPrice: '197,00',
-    price: '19',
-    cents: ',97',
-    freq: 'PAGAMENTO ÚNICO',
-    stockText: 'Restam apenas 3 de 25 licenças',
-    stockPercent: '88%',
-    stockColor: '#ffaa00',
-    features: [
-      '+1000 jogos desbloqueados',
-      'Entrega instantânea',
-      'Acesso vitalício',
-      'Anti-ban e seguro',
-      'Online desbloqueado',
-      'Jogos Rockstar / Ubisoft',
-      'Suporte WhatsApp',
-      'Garantia de 7 dias',
-    ],
-    btnText: 'Assinar Avançado',
-    btnClass: 'btn-advanced',
-  },
-  {
     id: 'ultimate',
     name: 'VITALÍCIO',
     tag: 'RECOMENDADO: BIBLIOTECA COMPLETA',
@@ -402,9 +378,6 @@ export function PricingSection() {
           .pricing-grid {
             grid-template-columns: 1fr;
             max-width: 400px;
-          }
-          .pricing-card-highlight {
-            order: -1;
           }
         }
       `}</style>

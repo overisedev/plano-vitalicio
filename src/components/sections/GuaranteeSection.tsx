@@ -1,4 +1,4 @@
-﻿import { useCallback } from 'react';
+import { useCallback } from 'react';
 
 export function GuaranteeSection() {
   const handleClick = useCallback((e: React.MouseEvent) => {
@@ -54,7 +54,7 @@ export function GuaranteeSection() {
 
   return (
     <section style={{ padding: '88px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden', background: 'var(--bg)' }}>
-      <div style={{ position: 'absolute', top: '-150px', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '400px', background: 'radial-gradient(ellipse,rgba(57,255,20,.03) 0%,transparent 65%)', pointerEvents: 'none' }}></div>
+      <div style={{ position: 'absolute', top: '-150px', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '400px', background: 'radial-gradient(ellipse,rgba(40,196,12,.03) 0%,transparent 65%)', pointerEvents: 'none' }}></div>
       <div className="reveal" style={{ position: 'relative', zIndex: 2, maxWidth: '600px', margin: '0 auto' }}>
         <div className="tag g">Pronto pra jogar?</div>
         <h2 className="h2 on-dark" style={{ fontSize: 'clamp(34px,6vw,72px)', marginBottom: '16px' }}>
@@ -62,13 +62,13 @@ export function GuaranteeSection() {
           <em>acabar hoje.</em>
         </h2>
         <p className="sub on-dark center" style={{ marginBottom: '32px' }}>
-          Elden Ring, GTA, God of War, Cyberpunk â€” acessÃ­veis em 5 minutos. R$49,97, taxa Ãºnica, licenÃ§a vitalÃ­cia.
+          Elden Ring, GTA, God of War, Cyberpunk — acessíveis em 5 minutos. R$49,97, taxa única, licença vitalícia.
         </p>
         <a href="#" onClick={handleClick} className="btn btn-accent btn-xl">
-          Garantir Meu Acesso â€” R$49,97
+          Garantir Meu Acesso — R$49,97
         </a>
         <div style={{ fontFamily: 'var(--fh)', fontSize: '11px', fontWeight: 700, color: 'var(--dim)', marginTop: '16px', letterSpacing: '.08em' }}>
-          7 DIAS DE GARANTIA Â· LICENÃ‡A VITALÃCIA Â· ACESSO IMEDIATO
+          7 DIAS DE GARANTIA · LICENÇA VITALÍCIA · ACESSO IMEDIATO
         </div>
       </div>
     </section>

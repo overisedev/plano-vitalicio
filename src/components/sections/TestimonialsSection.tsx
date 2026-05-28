@@ -1,35 +1,17 @@
 import React from 'react';
 
-const columns = [
-  {
-    dur: '25s',
-    images: [
-      'https://i.imgur.com/tl8AVVF.png',
-      'https://i.imgur.com/FECl9Fm.png',
-      'https://i.imgur.com/evcOisC.png',
-    ],
-  },
-  {
-    dur: '32s',
-    images: [
-      'https://i.imgur.com/9d3sBFD.png',
-      'https://i.imgur.com/twcnTWc.png',
-      'https://i.imgur.com/eetZKMc.png',
-    ],
-  },
-  {
-    dur: '28s',
-    images: [
-      'https://i.imgur.com/XuoRRNP.png',
-      'https://i.imgur.com/gjp6ejB.png',
-      'https://i.imgur.com/tl8AVVF.png',
-    ],
-  },
+const ALL_IMAGES = [
+  'https://i.imgur.com/tl8AVVF.png',
+  'https://i.imgur.com/FECl9Fm.png',
+  'https://i.imgur.com/evcOisC.png',
+  'https://i.imgur.com/9d3sBFD.png',
+  'https://i.imgur.com/twcnTWc.png',
+  'https://i.imgur.com/eetZKMc.png',
 ];
 
 export const TestimonialsSection: React.FC = () => {
   return (
-    <section id="testemunhos" className="sec-dark" style={{ padding: '80px 0' }}>
+    <section id="testemunhos" className="sec-dark hide-on-mobile" style={{ padding: '80px 0' }}>
       <div className="container">
         <div className="text-center reveal" style={{ marginBottom: 48 }}>
           <div className="tag g">Feedback real de clientes</div>
@@ -43,40 +25,42 @@ export const TestimonialsSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="testi-wrap reveal rd1">
-          {columns.map((col, colIdx) => (
-            <div className="testi-col" key={colIdx}>
-              <div
-                className="testi-col-inner"
-                style={{ '--dur': col.dur } as React.CSSProperties}
-              >
-                {/* Original cards */}
-                {col.images.map((src, imgIdx) => (
-                  <div className="testi-card" key={imgIdx}>
-                    <img
-                      className="testi-card-img"
-                      src={src}
-                      alt="Feedback cliente"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-                {/* Duplicate for seamless loop */}
-                {col.images.map((src, imgIdx) => (
-                  <div className="testi-card" key={`dup-${imgIdx}`}>
-                    <img
-                      className="testi-card-img"
-                      src={src}
-                      alt="Feedback cliente"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
+        {/* Desktop Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: '16px',
+          marginTop: '40px',
+          maxWidth: '760px',
+          margin: '40px auto 0',
+        }} className="reveal rd1 desktop-only">
+          {ALL_IMAGES.map((src, i) => (
+            <div
+              key={i}
+              style={{
+                background: '#161b22',
+                border: '1px solid rgba(255,255,255,0.06)',
+                borderRadius: '12px',
+                overflow: 'hidden',
+              }}
+            >
+              <img
+                src={src}
+                alt={`Feedback cliente ${i + 1}`}
+                loading="lazy"
+                style={{ width: '100%', display: 'block', borderRadius: '12px' }}
+              />
             </div>
           ))}
         </div>
+
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .hide-on-mobile { display: none !important; }
+        }
+      `}</style>
     </section>
   );
 };

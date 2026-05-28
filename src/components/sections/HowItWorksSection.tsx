@@ -1,4 +1,4 @@
-﻿export function HowItWorksSection() {
+export function HowItWorksSection() {
   return (
     <section id="how" className="sec-dark section-grid">
       <div className="container text-center">
@@ -15,7 +15,7 @@
             <div className="step-num">01</div>
             <div className="step-title">Garanta sua licença</div>
             <div className="step-desc">
-              Pague R,97 uma vez. Receba o software por e-mail em minutos.
+              Pague R$49,97 uma vez. Receba o software por e-mail em minutos.
             </div>
           </div>
           <div className="step">
@@ -44,7 +44,7 @@
             <div>
               <div className="step-result-txt">Biblioteca pronta em 5 minutos</div>
               <div className="step-result-sub">
-                Licença vitalícia · +1000 jogos · R,97 taxa única
+                Licença vitalícia · +40.000 jogos · R$49,97 taxa única
               </div>
             </div>
           </div>
@@ -53,7 +53,7 @@
             className="btn btn-accent btn-lg"
             style={{ background: '#000', color: 'var(--accent)', boxShadow: 'none' }}
           >
-            Garantir ?
+            Garantir →
           </a>
         </div>
       </div>
