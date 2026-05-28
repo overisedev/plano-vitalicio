@@ -11,7 +11,7 @@ export function GameModal({ game, onClose }: GameModalProps) {
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-top">
           <img src={`https://steamcdn-a.akamaihd.net/steam/apps/${game.steam_appid}/library_hero.jpg`} alt={game.name} onError={(e) => { e.currentTarget.src = game.cover; }} />
-          <button className="modal-close" onClick={onClose}>✕</button>
+          <button className="modal-close" onClick={onClose} aria-label="Fechar">✕</button>
         </div>
         <div className="modal-body">
           <div>
